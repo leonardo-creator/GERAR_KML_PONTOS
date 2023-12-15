@@ -9,7 +9,7 @@ body {
 header {
     display: flex;
     flex-wrap: wrap;
-    width: 96vw;
+    width: 90vw;
     justify-content: space-between;
     align-items: center;
     text-align: center;
