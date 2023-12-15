@@ -1,11 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    padding: 20px;
 }
 
 .container {
@@ -13,10 +9,12 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: auto;
 }
 
 textarea {
-    width: 300px;
+    width: 100%;
     height: 100px;
     margin-bottom: 10px;
 }
@@ -28,8 +26,32 @@ button {
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
+    margin-right: 5px;
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+#tableWrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
 }

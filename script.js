@@ -1,22 +1,36 @@
 document.getElementById('parseBtn').addEventListener('click', function() {
-    const data = document.getElementById('dataInput').value;
-    try {
-        const jsonData = JSON.parse(data);
-        populateTable(jsonData);
-    } catch (error) {
-        alert('Dados inválidos. Por favor, insira um JSON válido.');
-    }
+    const input = document.getElementById('dataInput').value;
+    parseAndDisplayData(input);
 });
 
 document.getElementById('generateBtn').addEventListener('click', function() {
-    const data = document.getElementById('dataInput').value;
-    try {
-        const jsonData = JSON.parse(data);
-        generateKML(jsonData);
-    } catch (error) {
-        alert('Dados inválidos. Por favor, insira um JSON válido.');
+    const input = document.getElementById('dataInput').value;
+    const data = parseData(input);
+    if(data) {
+        generateKML(data);
     }
 });
+
+function parseAndDisplayData(input) {
+    const data = parseData(input);
+    if(data) {
+        populateTable(data);
+    }
+}
+
+function parseData(input) {
+    const rows = input.trim().split('\n');
+    const data = rows.map(row => {
+        const columns = row.split('\t');
+        return {
+            nome: columns[0],
+            descricao: columns[1],
+            latitude: columns[2],
+            longitude: columns[3]
+        };
+    });
+    return data;
+}
 
 function populateTable(data) {
     const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
