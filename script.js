@@ -1,13 +1,17 @@
-document.getElementById('parseBtn').addEventListener('click', function() {
-    const input = document.getElementById('dataInput').value;
-    parseAndDisplayData(input);
+document.getElementById('dataInput').addEventListener('input', function() {
+    const input = this.value;
+    if(input.trim() !== '') {
+        parseAndDisplayData(input);
+    }
 });
 
 document.getElementById('generateBtn').addEventListener('click', function() {
     const input = document.getElementById('dataInput').value;
     const data = parseData(input);
-    if(data) {
+    if(data && data.length > 0) {
         generateKML(data);
+    } else {
+        alert('Por favor, cole os dados na área de texto.');
     }
 });
 
@@ -22,13 +26,16 @@ function parseData(input) {
     const rows = input.trim().split('\n');
     const data = rows.map(row => {
         const columns = row.split('\t');
-        return {
-            nome: columns[0],
-            descricao: columns[1],
-            latitude: columns[2],
-            longitude: columns[3]
-        };
-    });
+        if (columns.length === 4) {
+            return {
+                nome: columns[0],
+                descricao: columns[1],
+                latitude: columns[2],
+                longitude: columns[3]
+            };
+        }
+        return null;
+    }).filter(item => item !== null);
     return data;
 }
 
@@ -52,8 +59,8 @@ function generateKML(data) {
 
     data.forEach(item => {
         kmlContent += `<Placemark>
-            <name>${item.nome}</name>
-            <description>${item.descricao}</description>
+            <name>${escapeHTML(item.nome)}</name>
+            <description>${escapeHTML(item.descricao)}</description>
             <Point>
                 <coordinates>${item.longitude},${item.latitude},0</coordinates>
             </Point>
@@ -68,9 +75,22 @@ function generateKML(data) {
 function downloadKML(kmlContent) {
     const blob = new Blob([kmlContent], {type: 'application/vnd.google-earth.kml+xml'});
     const url = URL.createObjectURL(blob);
-    const downloadLink = document.getElementById('downloadLink');
+    const downloadLink = document.createElement('a');
     downloadLink.href = url;
     downloadLink.download = 'pontos.kml';
-    downloadLink.style.display = 'block';
-    downloadLink.textContent = 'Baixar KML';
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+}
+
+function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, 
+        tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+        }[tag] || tag));
 }
