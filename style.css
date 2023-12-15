@@ -9,7 +9,7 @@ body {
 header {
     display: flex;
     flex-wrap: wrap;
-    width: 90vw;
+    width: 98vw;
     justify-content: space-between;
     align-items: center;
     text-align: center;
@@ -17,7 +17,8 @@ header {
     color: #110043;
     padding: 2vh; 
     margin-bottom: 1vh;
-    margin: 2vw;
+    margin-left: 1vw;
+    margin-right: 1vw;
 }
 
 .corner {
