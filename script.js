@@ -1,3 +1,13 @@
+document.getElementById('parseBtn').addEventListener('click', function() {
+    const data = document.getElementById('dataInput').value;
+    try {
+        const jsonData = JSON.parse(data);
+        populateTable(jsonData);
+    } catch (error) {
+        alert('Dados inválidos. Por favor, insira um JSON válido.');
+    }
+});
+
 document.getElementById('generateBtn').addEventListener('click', function() {
     const data = document.getElementById('dataInput').value;
     try {
@@ -7,6 +17,19 @@ document.getElementById('generateBtn').addEventListener('click', function() {
         alert('Dados inválidos. Por favor, insira um JSON válido.');
     }
 });
+
+function populateTable(data) {
+    const tableBody = document.getElementById('dataTable').getElementsByTagName('tbody')[0];
+    tableBody.innerHTML = ''; // Limpa a tabela existente
+
+    data.forEach(item => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = item.nome;
+        row.insertCell(1).textContent = item.descricao;
+        row.insertCell(2).textContent = item.latitude;
+        row.insertCell(3).textContent = item.longitude;
+    });
+}
 
 function generateKML(data) {
     let kmlContent = '<?xml version="1.0" encoding="UTF-8"?>';
